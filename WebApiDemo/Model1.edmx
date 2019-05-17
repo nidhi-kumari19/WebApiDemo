@@ -1,0 +1,257 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="PODbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Item">
+          <Key>
+            <PropertyRef Name="itcode" />
+          </Key>
+          <Property Name="itcode" Type="char" MaxLength="4" Nullable="false" />
+          <Property Name="itdesc" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="itrate" Type="money" />
+        </EntityType>
+        <EntityType Name="Podetail">
+          <Key>
+            <PropertyRef Name="pono" />
+            <PropertyRef Name="itcode" />
+          </Key>
+          <Property Name="pono" Type="char" MaxLength="4" Nullable="false" />
+          <Property Name="itcode" Type="char" MaxLength="4" Nullable="false" />
+          <Property Name="qty" Type="int" />
+        </EntityType>
+        <EntityType Name="Pomaster">
+          <Key>
+            <PropertyRef Name="pono" />
+          </Key>
+          <Property Name="pono" Type="char" MaxLength="4" Nullable="false" />
+          <Property Name="podate" Type="datetime" />
+          <Property Name="suplno" Type="char" MaxLength="4" />
+        </EntityType>
+        <EntityType Name="Supplier">
+          <Key>
+            <PropertyRef Name="suplno" />
+          </Key>
+          <Property Name="suplno" Type="char" MaxLength="4" Nullable="false" />
+          <Property Name="suplname" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="supladdr" Type="varchar" MaxLength="40" />
+        </EntityType>
+        <Association Name="FK__Podetail__itcode__3F466844">
+          <End Role="Item" Type="Self.Item" Multiplicity="1" />
+          <End Role="Podetail" Type="Self.Podetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="itcode" />
+            </Principal>
+            <Dependent Role="Podetail">
+              <PropertyRef Name="itcode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Podetail__pono__3E52440B">
+          <End Role="Pomaster" Type="Self.Pomaster" Multiplicity="1" />
+          <End Role="Podetail" Type="Self.Podetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pomaster">
+              <PropertyRef Name="pono" />
+            </Principal>
+            <Dependent Role="Podetail">
+              <PropertyRef Name="pono" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Pomaster__suplno__3B75D760">
+          <End Role="Supplier" Type="Self.Supplier" Multiplicity="0..1" />
+          <End Role="Pomaster" Type="Self.Pomaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Supplier">
+              <PropertyRef Name="suplno" />
+            </Principal>
+            <Dependent Role="Pomaster">
+              <PropertyRef Name="suplno" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PODbModelStoreContainer">
+          <EntitySet Name="Item" EntityType="Self.Item" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Podetail" EntityType="Self.Podetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pomaster" EntityType="Self.Pomaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Supplier" EntityType="Self.Supplier" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Podetail__itcode__3F466844" Association="Self.FK__Podetail__itcode__3F466844">
+            <End Role="Item" EntitySet="Item" />
+            <End Role="Podetail" EntitySet="Podetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Podetail__pono__3E52440B" Association="Self.FK__Podetail__pono__3E52440B">
+            <End Role="Pomaster" EntitySet="Pomaster" />
+            <End Role="Podetail" EntitySet="Podetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Pomaster__suplno__3B75D760" Association="Self.FK__Pomaster__suplno__3B75D760">
+            <End Role="Supplier" EntitySet="Supplier" />
+            <End Role="Pomaster" EntitySet="Pomaster" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PODbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Item">
+          <Key>
+            <PropertyRef Name="itcode" />
+          </Key>
+          <Property Name="itcode" Type="String" MaxLength="4" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="itdesc" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="itrate" Type="Decimal" Precision="19" Scale="4" />
+          <NavigationProperty Name="Podetails" Relationship="Self.FK__Podetail__itcode__3F466844" FromRole="Item" ToRole="Podetail" />
+        </EntityType>
+        <EntityType Name="Podetail">
+          <Key>
+            <PropertyRef Name="pono" />
+            <PropertyRef Name="itcode" />
+          </Key>
+          <Property Name="pono" Type="String" MaxLength="4" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="itcode" Type="String" MaxLength="4" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="qty" Type="Int32" />
+          <NavigationProperty Name="Item" Relationship="Self.FK__Podetail__itcode__3F466844" FromRole="Podetail" ToRole="Item" />
+          <NavigationProperty Name="Pomaster" Relationship="Self.FK__Podetail__pono__3E52440B" FromRole="Podetail" ToRole="Pomaster" />
+        </EntityType>
+        <EntityType Name="Pomaster">
+          <Key>
+            <PropertyRef Name="pono" />
+          </Key>
+          <Property Name="pono" Type="String" MaxLength="4" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="podate" Type="DateTime" Precision="3" />
+          <Property Name="suplno" Type="String" MaxLength="4" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="Podetails" Relationship="Self.FK__Podetail__pono__3E52440B" FromRole="Pomaster" ToRole="Podetail" />
+          <NavigationProperty Name="Supplier" Relationship="Self.FK__Pomaster__suplno__3B75D760" FromRole="Pomaster" ToRole="Supplier" />
+        </EntityType>
+        <EntityType Name="Supplier">
+          <Key>
+            <PropertyRef Name="suplno" />
+          </Key>
+          <Property Name="suplno" Type="String" MaxLength="4" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="suplname" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="supladdr" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK__Podetail__itcode__3F466844">
+          <End Role="Item" Type="Self.Item" Multiplicity="1" />
+          <End Role="Podetail" Type="Self.Podetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="itcode" />
+            </Principal>
+            <Dependent Role="Podetail">
+              <PropertyRef Name="itcode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Podetail__pono__3E52440B">
+          <End Role="Pomaster" Type="Self.Pomaster" Multiplicity="1" />
+          <End Role="Podetail" Type="Self.Podetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pomaster">
+              <PropertyRef Name="pono" />
+            </Principal>
+            <Dependent Role="Podetail">
+              <PropertyRef Name="pono" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Pomaster__suplno__3B75D760">
+          <End Role="Supplier" Type="Self.Supplier" Multiplicity="0..1" />
+          <End Role="Pomaster" Type="Self.Pomaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Supplier">
+              <PropertyRef Name="suplno" />
+            </Principal>
+            <Dependent Role="Pomaster">
+              <PropertyRef Name="suplno" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PODbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Items" EntityType="Self.Item" />
+          <EntitySet Name="Podetails" EntityType="Self.Podetail" />
+          <EntitySet Name="Pomasters" EntityType="Self.Pomaster" />
+          <EntitySet Name="Suppliers" EntityType="Self.Supplier" />
+          <AssociationSet Name="FK__Podetail__itcode__3F466844" Association="Self.FK__Podetail__itcode__3F466844">
+            <End Role="Item" EntitySet="Items" />
+            <End Role="Podetail" EntitySet="Podetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Podetail__pono__3E52440B" Association="Self.FK__Podetail__pono__3E52440B">
+            <End Role="Pomaster" EntitySet="Pomasters" />
+            <End Role="Podetail" EntitySet="Podetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Pomaster__suplno__3B75D760" Association="Self.FK__Pomaster__suplno__3B75D760">
+            <End Role="Supplier" EntitySet="Suppliers" />
+            <End Role="Pomaster" EntitySet="Pomasters" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PODbModelStoreContainer" CdmEntityContainer="PODbEntities">
+          <EntitySetMapping Name="Items">
+            <EntityTypeMapping TypeName="PODbModel.Item">
+              <MappingFragment StoreEntitySet="Item">
+                <ScalarProperty Name="itcode" ColumnName="itcode" />
+                <ScalarProperty Name="itdesc" ColumnName="itdesc" />
+                <ScalarProperty Name="itrate" ColumnName="itrate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Podetails">
+            <EntityTypeMapping TypeName="PODbModel.Podetail">
+              <MappingFragment StoreEntitySet="Podetail">
+                <ScalarProperty Name="pono" ColumnName="pono" />
+                <ScalarProperty Name="itcode" ColumnName="itcode" />
+                <ScalarProperty Name="qty" ColumnName="qty" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pomasters">
+            <EntityTypeMapping TypeName="PODbModel.Pomaster">
+              <MappingFragment StoreEntitySet="Pomaster">
+                <ScalarProperty Name="pono" ColumnName="pono" />
+                <ScalarProperty Name="podate" ColumnName="podate" />
+                <ScalarProperty Name="suplno" ColumnName="suplno" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Suppliers">
+            <EntityTypeMapping TypeName="PODbModel.Supplier">
+              <MappingFragment StoreEntitySet="Supplier">
+                <ScalarProperty Name="suplno" ColumnName="suplno" />
+                <ScalarProperty Name="suplname" ColumnName="suplname" />
+                <ScalarProperty Name="supladdr" ColumnName="supladdr" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
